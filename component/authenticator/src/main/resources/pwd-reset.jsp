@@ -25,7 +25,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.TenantDataManager" %>
 
-
+<%@ include file="includes/localize.jsp" %>
 <%
     request.getSession().invalidate();
     String queryString = request.getQueryString();
@@ -36,7 +36,8 @@
     
     String errorMessage = "Authentication Failed! Please Retry";
     String authenticationFailed = "false";
-    
+    String regexpattern = "";
+
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
         
@@ -46,6 +47,13 @@
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = "Authentication Failed! Please Retry";
             }
+
+            String regex = "format, ";
+            String[] error = errorMessage.split(regex);
+            if (error.length > 1){
+              errorMessage = errorMessage.split(regex)[0] + regex;
+              regexpattern = errorMessage.split(regex)[1];
+            }
         }
     }
 %>
@@ -54,10 +62,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WSO2 Identity Server</title>
-    
+    <title><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%></title>
+
     <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/Roboto.css" rel="stylesheet">
     <link href="css/custom-common.css" rel="stylesheet">
     
@@ -78,8 +86,8 @@
         <div class="pull-left brand float-remove-xs text-center-xs">
             <a href="#">
                 <img src="images/logo-inverse.svg" alt="wso2" title="wso2" class="logo">
-                
-                <h1><em>Identity Server</em></h1>
+
+                <h1><em><%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%></em></h1>
             </a>
         </div>
     </div>
@@ -95,7 +103,7 @@
             <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-4 col-centered wr-content wr-login col-centered">
                 <div>
                     <h2 class="wr-title blue-bg padding-double white boarder-bottom-blue margin-none">
-                        Change your password &nbsp;&nbsp;</h2>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "change.password")%> &nbsp;&nbsp;</h2>
                 </div>
                 <div class="boarder-all ">
                     <div class="clearfix"></div>
@@ -105,7 +113,7 @@
                             if ("true".equals(authenticationFailed)) {
                         %>
                         <div class="alert alert-danger" id="failed-msg">
-                            <%=errorMessage%>
+                            <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, errorMessage)%><%=Encode.forHtml(regexpattern)%>
                         </div>
                         <% }
                         
@@ -123,18 +131,18 @@
                                         <div class='col-md-12 form-group'>
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                                 <input id="currentPassword" name="CURRENT_PWD" type="password" class="form-control" tabindex="0"
-                                                       placeholder="Current Password" autocomplete="off">
+                                                       placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "current.password")%>" autocomplete="off">
                                             </div>
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                                 <input id="newPassword" name="NEW_PWD" type="password" class="form-control"
-                                                       placeholder="New Password" autocomplete="off">
+                                                       placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "new.password")%>" autocomplete="off">
                                             </div>
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                                 <input id="repeatPassword" name="NEW_PWD_CONFIRMATION" type="password" class="form-control"
-                                                       placeholder="Repeat Password" autocomplete="off">
+                                                       placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "repeat.password")%>" autocomplete="off">
                                             </div>
                                             <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group'>
-                                                <button class='form-control btn btn-primary submit-button' type='submit' onclick="$('#loading').show();">Change password</button>
+                                                <button class='form-control btn btn-primary submit-button' type='submit' onclick="$('#loading').show();"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "change.password.btn")%></button>
                                             </div>
                                         </div>
                                     </div>
@@ -156,13 +164,15 @@
 <!-- footer -->
 <footer class="footer">
     <div class="container-fluid">
-        <p>WSO2 Identity Server | &copy;
+        <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> | &copy;
             <script>document.write(new Date().getFullYear());</script>
-            <a href="http://wso2.com/" target="_blank"><i class="icon fw fw-wso2"></i> Inc</a>. All Rights Reserved.
+            <a href="http://wso2.com/" target="_blank"><i class="icon fw fw-wso2"></i>
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "inc")%>
+          </a>. <%=AuthenticationEndpointUtil.i18n(resourceBundle, "all.rights.reserved")%>
         </p>
     </div>
 </footer>
 <script src="libs/jquery_1.11.3/jquery-1.11.3.js"></script>
-<script src="libs/bootstrap_3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
