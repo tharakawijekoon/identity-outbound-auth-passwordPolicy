@@ -36,7 +36,6 @@
     
     String errorMessage = "Authentication Failed! Please Retry";
     String authenticationFailed = "false";
-    String regexpattern = "";
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
@@ -46,13 +45,6 @@
             
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = "Authentication Failed! Please Retry";
-            }
-
-            String regex = "format, ";
-            String[] error = errorMessage.split(regex);
-            if (error.length > 1){
-              errorMessage = errorMessage.split(regex)[0] + regex;
-              regexpattern = errorMessage.split(regex)[1];
             }
         }
     }
@@ -113,7 +105,7 @@
                             if ("true".equals(authenticationFailed)) {
                         %>
                         <div class="alert alert-danger" id="failed-msg">
-                            <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, errorMessage)%><%=Encode.forHtml(regexpattern)%>
+                            <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, errorMessage)%>
                         </div>
                         <% }
                         
